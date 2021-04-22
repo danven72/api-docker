@@ -1,0 +1,14 @@
+{
+  "name": "api-docker",
+  "version": "1.0.0",
+  "description": "Example rest API",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "author": "dventura",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}

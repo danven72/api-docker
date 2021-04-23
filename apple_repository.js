@@ -26,6 +26,19 @@ function AppleRepository() {
         return deleted;    
     };
 
+    this.updateApple = function(apple) {
+        let updated = false;
+        for(let i=0; i< appleList.length; i++) {
+            if (appleList[i].id == apple.id) {
+                console.log('found!');
+                appleList[i].name = apple.name;
+                appleList[i].color = apple.color;
+                updated = true;
+            }
+        }
+        return updated;            
+    }
+
     Object.defineProperty(this, 'appleList', {
         get: function() {
             return appleList;

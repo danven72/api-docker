@@ -26,6 +26,21 @@ app.post('/add/apple', (req, res)=> {
     res.send(apple);
 });
 
+app.put('/update/apple', (req, res) => {
+    //console.log('from body: ' + JSON.stringify(req.body));
+    let apple = new Apple(req.body.id, req.body.name, req.body.color);
+    //console.log('apple built: ' + JSON.stringify(apple));
+    let updated = appleRepository.updateApple(apple);
+    if (updated) {
+        res.send(apple);
+    }
+    else {
+        res.status(400);
+        res.send('Apple not found: nothing to update');
+    }
+});
+
+
 app.delete('/delete/apple/:id', (req,res) => {
     const id = req.params.id;
     console.log(`ID to delete: ${id}`);

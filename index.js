@@ -3,7 +3,7 @@ const Apple = require('./apple');
 const AppleRepository = require('./apple_repository')
 
 const app = express();
-const port = 3500;
+const port = 5000;
 const appleRepository = new AppleRepository();
 
 app.listen(port, () => {

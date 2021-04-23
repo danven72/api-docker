@@ -1,8 +1,7 @@
-const Joi = require('joi');
 const express = require('express'); //ritorna function
 const Apple = require('./apple');
 const AppleRepository = require('./apple_repository')
-
+const AppleValidator = require('./apple_input_validator');
 const app = express();  
 app.use(express.json()); //abilita il parsing JSON nel body della request: di default non è abilitato
 app.use(express.urlencoded({
@@ -12,6 +11,7 @@ app.use(express.urlencoded({
 //proper way to assign port: if environment variable PORT is assignet it use it. Else it is 3500
 const port = process.env.PORT || 3500; 
 const appleRepository = new AppleRepository();
+const appleValidator = new AppleValidator();
 
 app.listen(port, () => {
     console.log(`App listening at  http://localhost:${port}`);
@@ -47,7 +47,7 @@ app.post('/add/apple', (req, res)=> {
     const name = req.body.name;
     const color = req.body.color;
    
-    const validationResult = validateInputAppleForAdd(req.body);
+    const validationResult = appleValidator.validateInputAppleForAdd(req.body);
     //console.log(validateInputAppleForAdd(req.body));
     if (validationResult.error) {
         res.status(400).send(validationResult.error.details[0].message);
@@ -64,7 +64,7 @@ app.put('/update/apple', (req, res) => {
     const id = req.body.id
     const name = req.body.name;
     const color = req.body.color;
-    const validationResult = validateInputAppleForUpdate(req.body);
+    const validationResult = appleValidator.validateInputAppleForUpdate(req.body);
     if (validationResult.error ) {
         res.status(400).send(validationResult.error.details[0].message);
         return;
@@ -83,7 +83,7 @@ app.put('/update/apple', (req, res) => {
 app.delete('/delete/apple/id/:id', (req,res) => {
     const id = req.params.id;
     console.log(`ID to delete: ${id}`);
-    const validationResult = validateInputParamsForDelete(req.params);
+    const validationResult = appleValidator.validateInputParamsForDelete(req.params);
     if (validationResult.error ) {
         res.status(400).send(validationResult.error.details[0].message);
         return;
@@ -97,28 +97,3 @@ app.delete('/delete/apple/id/:id', (req,res) => {
         res.status(404).send('Apple not found: nothing to delete');
     }
 });
-
-/* Validation done using Joi library */
-function validateInputAppleForAdd(apple) {
-    const schema = Joi.object({ 
-        name: Joi.string() .min(2) .required(),
-        color: Joi.string() .min(2) .required() 
-    });        
-    return schema.validate(apple);
-}
-
-function validateInputAppleForUpdate(apple) {
-    const schema = Joi.object({ 
-        id: Joi.number().min(1).required(),
-        name: Joi.string() .min(2) ,
-        color: Joi.string() .min(2) 
-    }).min(2);  // at least 2 values required in input (id always required and min ine field to Update)       
-    return schema.validate(apple);
-}
-
-function validateInputParamsForDelete(params) {
-    const schema = Joi.object({ 
-        id: Joi.number().min(1).required()
-    });
-    return schema.validate(params);
-}

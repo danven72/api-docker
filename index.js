@@ -6,7 +6,7 @@ const app = express();
 const port = 5000;
 const appleRepository = new AppleRepository();
 
-app.listen(port, () => {
+app.listen(process.env.PORT || port, () => {
     console.log(`App listening at  http://localhost:${port}`);
 });
 

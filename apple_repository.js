@@ -3,6 +3,10 @@ const Apple = require('./apple');
 function AppleRepository() {
     let appleList = [new Apple(1, 'golden', 'yellow'), new Apple(2, 'delicious', 'yellow'), new Apple(3, 'fuji', 'red')];
 
+    this.findAppleById = function(id) {
+        return appleList.find(a => a.id === parseInt(id));
+    }
+
     this.addApple = function(apple) {
         apple.id = calculateNewId();
         appleList.push(apple);
@@ -27,13 +31,18 @@ function AppleRepository() {
     };
 
     this.updateApple = function(apple) {
-        let updated = false;
+        let updated = null;
+        
         for(let i=0; i< appleList.length; i++) {
             if (appleList[i].id == apple.id) {
                 console.log('found!');
-                appleList[i].name = apple.name;
-                appleList[i].color = apple.color;
-                updated = true;
+                if(apple.name) {
+                    appleList[i].name = apple.name;
+                }
+                if (apple.color) {
+                    appleList[i].color = apple.color;
+                }
+                updated = appleList[i];
             }
         }
         return updated;            
@@ -47,5 +56,3 @@ function AppleRepository() {
 }
 
 module.exports = AppleRepository;
-
-

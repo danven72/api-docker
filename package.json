@@ -9,7 +9,8 @@
   "author": "dventura",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "joi": "^17.4.0"
   },
   "engines": {
     "node": "8.11.2",

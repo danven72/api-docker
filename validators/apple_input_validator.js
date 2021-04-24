@@ -1,4 +1,6 @@
 const Joi = require('joi');
+//This library validate Mongo IDs
+const JoiOid = require('joi-oid');
 
 function AppleValidator() {
 
@@ -10,13 +12,32 @@ function AppleValidator() {
         return schema.validate(apple);
     }
 
-   this. validateInputAppleForUpdate =  function(apple) {
-        const schema = Joi.object({ 
-            id: Joi.number().min(1).required(),
-            name: Joi.string() .min(2) ,
-            color: Joi.string() .min(2) 
-        }).min(2);  // at least 2 values required in input (id always required and min ine field to Update)       
-        return schema.validate(apple);
+    this.validateInputMongoId = function(mongoId) {
+        return doIdValidation(mongoId);
+    }
+
+    function doIdValidation(mongoId) {
+        const schema = JoiOid.object({
+            id: JoiOid.objectId(),
+            name: JoiOid.string(),
+            age: JoiOid.number().min(18),
+          });
+          return schema.validate(mongoId);
+
+    }
+
+   this. validateInputAppleForUpdate =  function(mongoid, apple) {
+        const idValidationResult = doIdValidation(mongoid);
+        if (idValidationResult.error) {
+            return idValidationResult;
+        }
+        else {
+            const schema = Joi.object({ 
+                name: Joi.string() .min(2) ,
+                color: Joi.string() .min(2) 
+            }).min(1);  // at least 1 values required in input (id always required and min ine field to Update)       
+            return schema.validate(apple);
+        }
     }
 
     this.validateInputParamsForDelete =  function(params) {

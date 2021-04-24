@@ -2,9 +2,9 @@
   "name": "api-docker",
   "version": "1.0.0",
   "description": "Example rest API",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "node app.js"
   },
   "author": "dventura",
   "license": "ISC",
@@ -12,6 +12,7 @@
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "joi": "^17.4.0",
+    "joi-oid": "^1.1.2",
     "mongoose": "^5.12.5"
   },
   "engines": {
